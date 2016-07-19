@@ -2,12 +2,20 @@
 Classe em PHP para geração dinâmica de CPFs válidos. Esta classe foi criada baseada no algorítmo disponível aqui: http://www.geradorcpf.com/algoritmo_do_cpf.htm.
 
 #Utilização
+
+### Criando um CPF
+Criando um cpf com um número aleatório gerado pela classe.
 ```
 $cpf = (new Cpf)->create();
 ```
-ou
+Criando um dígito verificador para um CPF de número aleatório informado pelo usuário. Se for informado um CPF válido, a classe irá retornar o dígito verificador real do CPF.
 ```
 $cpf = (new Cpf('111.444.777'))->create();
+```
+### Validando um CPF
+```
+$cpf = (new Cpf('000.000.001-91'))->validate(); // retorna true
+$cpf = (new Cpf('000.000.001-90'))->validate(); // retorna false
 ```
 
 #Autor
