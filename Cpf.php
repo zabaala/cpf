@@ -26,13 +26,21 @@ class Cpf
    */
   public function __construct($cpf = '') {
       
-    if ($cpf != '' && strlen($cpf) < 9) {
+    if (!empty($cpf) && strlen($cpf) < 9) {
       throw new Exception("O CPF precisa possuir, no mínimo 9 caracteres.", 1);
     }
 
     $this->cpf = $cpf;
   }
 
+  /**
+   * Retorna o CPF quando a descrição da classe for requisitada.
+   * @return string
+   */
+  public function __toString() {
+    return $this->getCpf();
+  }
+  
   /**
    * Considerando que o CPF é composto por 3 blocos de 
    * 3 digitos, separados por um ponto(.) e complementados por 
@@ -60,7 +68,7 @@ class Cpf
    */
   private function generateFakeBlocks() {
       
-    if($this->cpf != '') {
+    if(!empty($this->cpf)) {
       return $this->getCpf(); 
     } 
 
@@ -82,7 +90,7 @@ class Cpf
    */
   private function calculateDv1() {
 
-      if ($this->dv1 != '') {
+      if (!empty($this->dv1)) {
         return $this->dv1;
       }
 
@@ -175,14 +183,6 @@ class Cpf
    */
   public function getCleanCpf() {
     return str_replace('-', '', str_replace('.', '', $this->cpf));
-  }
-
-  /**
-   * Retorna o CPF quando a descrição da classe for requisitada.
-   * @return string
-   */
-  public function __toString() {
-    return $this->getCpf();
   }
 
 }
