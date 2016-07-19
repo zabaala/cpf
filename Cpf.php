@@ -34,6 +34,14 @@ class Cpf
   }
 
   /**
+   * Retorna o CPF quando a descrição da classe for requisitada.
+   * @return string
+   */
+  public function __toString() {
+    return $this->getCpf();
+  }
+  
+  /**
    * Considerando que o CPF é composto por 3 blocos de 
    * 3 digitos, separados por um ponto(.) e complementados por 
    * um dígito verificador, este método gera números randômicos para
@@ -175,14 +183,6 @@ class Cpf
    */
   public function getCleanCpf() {
     return preg_replace('/[^0-9]/ism', '', $this->cpf);
-  }
-
-  /**
-   * Retorna o CPF quando a descrição da classe for requisitada.
-   * @return string
-   */
-  public function __toString() {
-    return $this->getCpf();
   }
 
 }
