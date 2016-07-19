@@ -21,6 +21,12 @@ class Cpf
   protected $dv2;
 
   /**
+   * Verifica se a requisição é de validação ou criação de um CPF.
+   * @var boolean
+   */
+  protected $isValidation = false;
+
+  /**
    * Método construtor.
    * @param string $cpf
    */
@@ -100,13 +106,7 @@ class Cpf
         $arr[$i] = $cpf{$i} * $j;
       }
 
-      // primeiro digito verificador (dv)
       $s = array_sum($arr);
-
-      // quociente do primeiro dv
-      $q = floor($s / 11);
-
-      // resto do primeiro dv
       $r = $s % 11;
 
       if($r<2) {
@@ -133,8 +133,6 @@ class Cpf
     }
 
     $s = array_sum($arr);
-
-    $q = floor($s / 11);
     $r = $s % 11;
 
     if($r < 2) {
@@ -151,6 +149,11 @@ class Cpf
    * @return string
    */
   private function compose(){
+
+    if ($this->isValidation) {
+      $this->cpf = substr($this->cpf, 0, strlen($this->cpf)-2);
+    }
+
     return sprintf(
       '%s-%u%u',
       $this->generateFakeBlocks(),
@@ -178,11 +181,34 @@ class Cpf
   }
 
   /**
+   * Remove caracteres especiais da string, deixando somente números.
+   * @param  string $str 
+   * @return string
+   */
+  private function clean($str) {
+    return preg_replace('/[^0-9]/ism', '', $str);
+  }
+
+  /**
    * Remove caracteres especiais do CPF.
    * @return string 
    */
   public function getCleanCpf() {
-    return preg_replace('/[^0-9]/ism', '', $this->cpf);
+    return $this->clean($this->cpf);
+  }
+
+  /**
+   * Efetua a validação de um número de CPF.
+   * @return bool
+   */
+  public function validate() {
+
+    $this->isValidation = true;
+
+    $tmpCpf   = $this->cpf; 
+    $testCpf  = $this->create($this->cpf);
+
+    return $this->clean($tmpCpf) == $this->clean($testCpf);
   }
 
 }
