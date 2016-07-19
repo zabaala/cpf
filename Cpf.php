@@ -26,7 +26,7 @@ class Cpf
    */
   public function __construct($cpf = '') {
       
-    if ($cpf != '' && strlen($cpf) < 9) {
+    if (!empty($cpf) && strlen($cpf) < 9) {
       throw new Exception("O CPF precisa possuir, no mínimo 9 caracteres.", 1);
     }
 
@@ -60,7 +60,7 @@ class Cpf
    */
   private function generateFakeBlocks() {
       
-    if($this->cpf != '') {
+    if(!empty($this->cpf)) {
       return $this->getCpf(); 
     } 
 
@@ -82,7 +82,7 @@ class Cpf
    */
   private function calculateDv1() {
 
-      if ($this->dv1 != '') {
+      if (!empty($this->dv1)) {
         return $this->dv1;
       }
 
@@ -174,7 +174,7 @@ class Cpf
    * @return string 
    */
   public function getCleanCpf() {
-    return str_replace('-', '', str_replace('.', '', $this->cpf));
+    return preg_replace('/[^0-9]/ism', '', $this->cpf);
   }
 
   /**
